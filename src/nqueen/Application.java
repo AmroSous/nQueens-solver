@@ -14,19 +14,28 @@ import javax.swing.event.*;
 /**
  * @author amroo
  */
+
 public class Application extends JFrame {
     
-    private Board board;
+    private final Board board;
     public Application() {
         
         initComponents();
         
         this.setTitle("N-Queen Solver");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        board = new Board();
+        board = new Board(this);
         chessBoardPanel.add(board);
-        board.setBounds(15, 15, chessBoardPanel.getWidth() - 30, chessBoardPanel.getHeight() - 30);
+        board.setBounds(5, 5, chessBoardPanel.getWidth() - 10, chessBoardPanel.getHeight() - 10);
         board.setBackground(chessBoardPanel.getBackground());
+    }
+
+    public void setIterationField(int value) {
+        iterationField.setText(value+"");
+    }
+
+    public void setTemperatureField(double value) {
+        temperatureField.setText(value+"");
     }
 
     private void setAnnealingPanelEnable(boolean state) {
@@ -42,22 +51,47 @@ public class Application extends JFrame {
     }
 
     private void run(ActionEvent e) {
-        HashMap<String, String> data = new HashMap<>();
-        data.put("algorithm", (String) algorithmCombo.getSelectedItem());
-        data.put("initial_temp", initialTemp.getText());
-        data.put("cooling_rate", coolingRate.getText());
-        data.put("final_temp", finalTemp.getText());
-        board.runAlgorithm(data);
-    }
+        messageLabel.setText("");
+        String algorithm = (String) algorithmCombo.getSelectedItem();
+        String initialT = initialTemp.getText().trim();
+        String cooling = coolingRate.getText().trim();
+        String finalT = finalTemp.getText().trim();
 
-    private void createUIComponents() {
-        // TODO: add custom component creation code here
+        String error = "";
+        if (algorithm == null || algorithm.equals("")) {
+            error = "Invalid Algorithm.";
+        }
+        else if (algorithm.equals("Simulated Annealing")) {
+            String pattern = "^[0-9]{1,9}(.([0-9]{1,5}))?$";
+            if (!initialT.matches(pattern) || !cooling.matches(pattern) || !finalT.matches(pattern)) {
+                error = "Invalid inputs in fields.";
+            }
+        }
+
+        if (!error.equals("")) {
+            messageLabel.setText(error);
+            return;
+        }
+
+        HashMap<String, String> data = new HashMap<>();
+        data.put("algorithm", algorithm);
+        data.put("initial_temp", initialT);
+        data.put("cooling_rate", cooling);
+        data.put("final_temp", finalT);
+        board.runAlgorithm(data);
     }
 
     private void boardSizeSpinnerStateChanged(ChangeEvent e) {
         board.setBoardSize((int)boardSizeSpinner.getValue());
     }
-    
+
+    private void clear(ActionEvent e) {
+        messageLabel.setText("");
+        initialTemp.setText("");
+        coolingRate.setText("");
+        finalTemp.setText("");
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Amro
@@ -79,6 +113,12 @@ public class Application extends JFrame {
         initializeButton = new JButton();
         runButton = new JButton();
         messageLabel = new JLabel();
+        clearButton = new JButton();
+        panel2 = new JPanel();
+        label7 = new JLabel();
+        iterationField = new JTextField();
+        label8 = new JLabel();
+        temperatureField = new JTextField();
 
         //======== this ========
         setBackground(new Color(0xcccccc));
@@ -87,12 +127,12 @@ public class Application extends JFrame {
         //======== panel1 ========
         {
             panel1.setBackground(new Color(0xcccccc));
-            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
-            .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDes\u0069gner \u0045valua\u0074ion" , javax. swing .border . TitledBorder. CENTER ,javax
-            . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "D\u0069alog", java .awt . Font. BOLD ,
-            12 ) ,java . awt. Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener( new java. beans
-            .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062order" .equals ( e.
-            getPropertyName () ) )throw new RuntimeException( ) ;} } );
+            panel1.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+            EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing
+            . border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ),
+            java. awt. Color. red) ,panel1. getBorder( )) ); panel1. addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+            { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () ))
+            throw new RuntimeException( ); }} );
             panel1.setLayout(null);
 
             //======== chessBoardPanel ========
@@ -116,7 +156,7 @@ public class Application extends JFrame {
                 }
             }
             panel1.add(chessBoardPanel);
-            chessBoardPanel.setBounds(10, 6, 480, 475);
+            chessBoardPanel.setBounds(10, 6, 465, 409);
 
             //======== controlPanel ========
             {
@@ -126,7 +166,7 @@ public class Application extends JFrame {
                 label1.setText("Board Size: ");
                 label1.setFont(new Font("SimSun", Font.PLAIN, 18));
                 controlPanel.add(label1);
-                label1.setBounds(35, 70, 115, 40);
+                label1.setBounds(35, 75, 115, 40);
 
                 //---- label2 ----
                 label2.setText("Control Panel");
@@ -140,13 +180,13 @@ public class Application extends JFrame {
                 boardSizeSpinner.setFont(new Font("Segoe UI", Font.PLAIN, 16));
                 boardSizeSpinner.addChangeListener(e -> boardSizeSpinnerStateChanged(e));
                 controlPanel.add(boardSizeSpinner);
-                boardSizeSpinner.setBounds(160, 75, 90, 32);
+                boardSizeSpinner.setBounds(160, 80, 90, 32);
 
                 //---- label3 ----
                 label3.setText("Algorithm:");
                 label3.setFont(new Font("SimSun", Font.PLAIN, 18));
                 controlPanel.add(label3);
-                label3.setBounds(35, 120, 115, 40);
+                label3.setBounds(35, 130, 115, 40);
 
                 //---- algorithmCombo ----
                 algorithmCombo.setModel(new DefaultComboBoxModel<>(new String[] {
@@ -156,7 +196,7 @@ public class Application extends JFrame {
                 algorithmCombo.setFont(new Font("SimSun", Font.PLAIN, 16));
                 algorithmCombo.addItemListener(e -> algorithmComboItemStateChanged(e));
                 controlPanel.add(algorithmCombo);
-                algorithmCombo.setBounds(160, 125, 180, 35);
+                algorithmCombo.setBounds(160, 135, 180, 35);
 
                 //======== simAnnealingPanel ========
                 {
@@ -221,28 +261,35 @@ public class Application extends JFrame {
                     }
                 }
                 controlPanel.add(simAnnealingPanel);
-                simAnnealingPanel.setBounds(35, 180, 345, 150);
+                simAnnealingPanel.setBounds(30, 190, 345, 150);
 
                 //---- initializeButton ----
                 initializeButton.setText("Initialize");
                 initializeButton.setFont(new Font("Sitka Text", Font.PLAIN, 16));
                 initializeButton.addActionListener(e -> initialize(e));
                 controlPanel.add(initializeButton);
-                initializeButton.setBounds(60, 360, 120, 40);
+                initializeButton.setBounds(140, 375, 105, 40);
 
                 //---- runButton ----
                 runButton.setText("Run");
                 runButton.setFont(new Font("Sitka Text", Font.PLAIN, 16));
                 runButton.addActionListener(e -> run(e));
                 controlPanel.add(runButton);
-                runButton.setBounds(225, 360, 120, 40);
+                runButton.setBounds(270, 375, 95, 40);
 
                 //---- messageLabel ----
                 messageLabel.setForeground(Color.red);
                 messageLabel.setFont(new Font("SimSun", Font.PLAIN, 16));
                 messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 controlPanel.add(messageLabel);
-                messageLabel.setBounds(40, 430, 335, 30);
+                messageLabel.setBounds(25, 435, 350, 30);
+
+                //---- clearButton ----
+                clearButton.setText("Clear");
+                clearButton.setFont(new Font("Sitka Text", Font.PLAIN, 16));
+                clearButton.addActionListener(e -> clear(e));
+                controlPanel.add(clearButton);
+                clearButton.setBounds(30, 375, 90, 40);
 
                 {
                     // compute preferred size
@@ -260,7 +307,53 @@ public class Application extends JFrame {
                 }
             }
             panel1.add(controlPanel);
-            controlPanel.setBounds(500, 5, 411, 475);
+            controlPanel.setBounds(485, 5, 395, 485);
+
+            //======== panel2 ========
+            {
+                panel2.setLayout(null);
+
+                //---- label7 ----
+                label7.setText("Iteration:");
+                label7.setFont(new Font("SimSun", Font.PLAIN, 18));
+                panel2.add(label7);
+                label7.setBounds(20, 20, 105, 30);
+
+                //---- iterationField ----
+                iterationField.setEnabled(false);
+                iterationField.setDisabledTextColor(new Color(0x333333));
+                panel2.add(iterationField);
+                iterationField.setBounds(125, 20, 55, 30);
+
+                //---- label8 ----
+                label8.setText("Temperature:");
+                label8.setFont(new Font("SimSun", Font.PLAIN, 18));
+                panel2.add(label8);
+                label8.setBounds(215, 20, 120, 30);
+
+                //---- temperatureField ----
+                temperatureField.setEnabled(false);
+                temperatureField.setDisabledTextColor(new Color(0x333333));
+                panel2.add(temperatureField);
+                temperatureField.setBounds(340, 20, 55, 30);
+
+                {
+                    // compute preferred size
+                    Dimension preferredSize = new Dimension();
+                    for(int i = 0; i < panel2.getComponentCount(); i++) {
+                        Rectangle bounds = panel2.getComponent(i).getBounds();
+                        preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                        preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+                    }
+                    Insets insets = panel2.getInsets();
+                    preferredSize.width += insets.right;
+                    preferredSize.height += insets.bottom;
+                    panel2.setMinimumSize(preferredSize);
+                    panel2.setPreferredSize(preferredSize);
+                }
+            }
+            panel1.add(panel2);
+            panel2.setBounds(10, 420, 465, 70);
 
             {
                 // compute preferred size
@@ -286,9 +379,9 @@ public class Application extends JFrame {
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
-                .addComponent(panel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panel1, GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
-        setSize(932, 532);
+        setSize(894, 537);
         setLocationRelativeTo(null);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
@@ -313,5 +406,11 @@ public class Application extends JFrame {
     private JButton initializeButton;
     private JButton runButton;
     private JLabel messageLabel;
+    private JButton clearButton;
+    private JPanel panel2;
+    private JLabel label7;
+    private JTextField iterationField;
+    private JLabel label8;
+    private JTextField temperatureField;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
