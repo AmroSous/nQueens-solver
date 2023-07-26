@@ -7,16 +7,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Board class extends JPanel used to paint the chess board
+ * and solve the n-queen problem using specified algorithms.
+ */
 public class Board extends JPanel {
 
+    /**
+     * attributes to represent the current state of the problem
+     * size: size of the squared board
+     * state: array represents the columns and each value represents the row index
+     *          of the queen in that column
+     */
     private int size = 8;
     private int[] state = {0, 0, 0, 0, 0, 0, 0, 0};
-    private Application parent;
+
+    /**
+     * pointer to Application object that initialize this component
+     * used to access the parent fields
+     */
+    private final Application parent;
 
     public Board(Application parent) {
         this.parent = parent;
     }
 
+    /**
+     * override paint method to paint the chess board
+     * and queens on it using the state field
+     */
     @Override
     public void paintComponent(Graphics g) {
 
@@ -42,6 +61,9 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * this method set random state to chess board
+     */
     public void initializeState() {
         Random rand = new Random();
         for (int i = 0; i < size; i++) {
@@ -50,6 +72,11 @@ public class Board extends JPanel {
         this.repaint();
     }
 
+    /**
+     * method to run solving problem
+     * takes data attribute specifies the algorithm used and
+     * the parameters of simulated annealing
+     */
     public void runAlgorithm(HashMap<String, String> data) {
         String algorithm = data.get("algorithm");
         if (algorithm.equals("Hill Climbing")) {
@@ -64,6 +91,14 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * method used to calculate the heuristic of given state
+     * takes the state as int array parameter
+     * this algorithm is optimized using HashMaps to make the time
+     * complexity of the algorithm --- O(n) ---
+     * the heuristic is computed by calculate the number of attacks
+     * between queens on the board
+     */
     private int getHeuristic(int[] stateArr) {
         int ans = 0;
         int s = stateArr.length;
@@ -82,6 +117,10 @@ public class Board extends JPanel {
         return ans;
     }
 
+    /**
+     * method to get random successor of given state
+     * used by simulated annealing algorithm
+     */
     private int[] getRandomSuccessor(int[] parent_state) {
         Random rand = new Random();
         int[] temp_state = parent_state.clone();
@@ -93,6 +132,9 @@ public class Board extends JPanel {
         return temp_state;
     }
 
+    /**
+     * the implementation of Hill Climbing algorithm
+     */
     private void hillClimbing() {
 
         int[] temp_state = state.clone();
@@ -136,6 +178,10 @@ public class Board extends JPanel {
         this.repaint();
     }
 
+    /**
+     * the implementation of Simulated Annealing algorithm
+     * takes initial and final temperature and cooling rate
+     */
     private void simulatedAnnealing(double initialTemp, double coolingRate, double finalTemp) {
 
         int[] curr_state = state.clone();
@@ -143,7 +189,7 @@ public class Board extends JPanel {
         int[] next_state;
 
         double tc = initialTemp;
-        int err = 0;
+        int err;
         Random rand = new Random();
         int iteration = 0;
 
@@ -166,6 +212,9 @@ public class Board extends JPanel {
         this.repaint();
     }
 
+    /**
+     * set board size and repaint the board
+     */
     public void setBoardSize(int value) {
         this.size = value;
         this.state = new int[size];
