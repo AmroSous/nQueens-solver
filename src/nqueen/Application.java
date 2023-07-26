@@ -22,6 +22,7 @@ public class Application extends JFrame {
      * which contains the algorithms implementation for solving the problem and
      * it paints the chess board on the application frame
      */
+
     private final Board board;
     public Application() {
         
@@ -239,6 +240,7 @@ public class Application extends JFrame {
                 label1.setFont(new Font("SimSun", Font.PLAIN, 18));
                 controlPanel.add(label1);
                 label1.setBounds(30, 90, 115, 40);
+                label1.setBounds(35, 75, 115, 40);
 
                 //---- label2 ----
                 label2.setText("Control Panel");
@@ -348,7 +350,7 @@ public class Application extends JFrame {
                 runButton.addActionListener(e -> run());
                 controlPanel.add(runButton);
                 runButton.setBounds(265, 385, 95, 40);
-
+              
                 //---- messageLabel ----
                 messageLabel.setForeground(Color.red);
                 messageLabel.setFont(new Font("SimSun", Font.PLAIN, 16));
@@ -432,7 +434,7 @@ public class Application extends JFrame {
                 temperatureField.setDisabledTextColor(new Color(0x333333));
                 resultPanel.add(temperatureField);
                 temperatureField.setBounds(340, 20, 100, 30);
-
+              
                 {
                     // compute preferred size
                     Dimension preferredSize = new Dimension();

@@ -82,6 +82,7 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 						"x": 160
 						"y": 155
+
 						"width": 180
 						"height": 35
 					} )
@@ -157,6 +158,7 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 						"x": 25
 						"y": 210
+
 						"height": 150
 						"width": 345
 					} )
@@ -168,6 +170,7 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 						"x": 135
 						"y": 385
+
 						"width": 105
 						"height": 40
 					} )
@@ -181,6 +184,7 @@ new FormModel {
 						"height": 40
 						"x": 265
 						"y": 385
+
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "messageLabel"
@@ -227,6 +231,7 @@ new FormModel {
 						"y": 60
 						"width": 70
 						"height": 30
+
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 485
