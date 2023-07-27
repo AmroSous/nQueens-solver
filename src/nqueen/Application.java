@@ -5,6 +5,7 @@
 package nqueen;
 
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -49,7 +50,8 @@ public class Application extends JFrame {
      * applying simulated annealing algorithm.
      */
     public void setTemperatureField(double value) {
-        temperatureField.setText(value+"");
+        DecimalFormat df = new DecimalFormat("#." + "0000");
+        temperatureField.setText(df.format(value));
     }
 
     /**
@@ -134,6 +136,10 @@ public class Application extends JFrame {
         resultPanel.setBackground(Color.decode("#f2f2f2"));
         Stream.of(resultPanel.getComponents()).filter(c -> c instanceof JLabel).forEach(l -> l.setForeground(Color.BLACK));
         Stream.of(controlPanel.getComponents()).filter(c -> c instanceof JLabel).forEach(l -> l.setForeground(Color.BLACK));
+        mainPanel.setBackground(Color.decode("#885577"));
+        chessBoardPanel.setBackground(Color.decode("#885577"));
+        board.setBackground(Color.decode("#885577"));
+        board.setBoardTheme(Board.Theme.LIGHT);
     }
 
     /**
@@ -144,6 +150,10 @@ public class Application extends JFrame {
         resultPanel.setBackground(Color.black);
         Stream.of(resultPanel.getComponents()).filter(c -> c instanceof JLabel).forEach(l -> l.setForeground(Color.cyan));
         Stream.of(controlPanel.getComponents()).filter(c -> c instanceof JLabel).forEach(l -> l.setForeground(Color.cyan));
+        mainPanel.setBackground(Color.decode("#999999"));
+        chessBoardPanel.setBackground(Color.decode("#999999"));
+        board.setBackground(Color.decode("#999999"));
+        board.setBoardTheme(Board.Theme.DARK);
     }
 
     /**
@@ -163,7 +173,7 @@ public class Application extends JFrame {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Amro
-        panel1 = new JPanel();
+        mainPanel = new JPanel();
         chessBoardPanel = new JPanel();
         controlPanel = new JPanel();
         label1 = new JLabel();
@@ -196,20 +206,21 @@ public class Application extends JFrame {
         setBackground(new Color(0xcccccc));
         var contentPane = getContentPane();
 
-        //======== panel1 ========
+        //======== mainPanel ========
         {
-            panel1.setBackground(new Color(0xcccccc));
-            panel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
-            border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
-            ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
-            . BOLD ,12 ) ,java . awt. Color .red ) ,panel1. getBorder () ) ); panel1. addPropertyChangeListener(
-            new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
-            .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
-            panel1.setLayout(null);
+            mainPanel.setBackground(new Color(0x885577));
+            mainPanel.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+            . swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing
+            . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+            Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+            ) ,mainPanel. getBorder( )) ); mainPanel. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+            public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName (
+            ) )) throw new RuntimeException( ); }} );
+            mainPanel.setLayout(null);
 
             //======== chessBoardPanel ========
             {
-                chessBoardPanel.setBackground(new Color(0xcccccc));
+                chessBoardPanel.setBackground(new Color(0x885577));
                 chessBoardPanel.setLayout(null);
 
                 {
@@ -227,7 +238,7 @@ public class Application extends JFrame {
                     chessBoardPanel.setPreferredSize(preferredSize);
                 }
             }
-            panel1.add(chessBoardPanel);
+            mainPanel.add(chessBoardPanel);
             chessBoardPanel.setBounds(10, 6, 465, 409);
 
             //======== controlPanel ========
@@ -402,8 +413,8 @@ public class Application extends JFrame {
                     controlPanel.setPreferredSize(preferredSize);
                 }
             }
-            panel1.add(controlPanel);
-            controlPanel.setBounds(485, 5, 395, 485);
+            mainPanel.add(controlPanel);
+            controlPanel.setBounds(485, 10, 395, 480);
 
             //======== resultPanel ========
             {
@@ -448,34 +459,19 @@ public class Application extends JFrame {
                     resultPanel.setPreferredSize(preferredSize);
                 }
             }
-            panel1.add(resultPanel);
+            mainPanel.add(resultPanel);
             resultPanel.setBounds(10, 420, 465, 70);
-
-            {
-                // compute preferred size
-                Dimension preferredSize = new Dimension();
-                for(int i = 0; i < panel1.getComponentCount(); i++) {
-                    Rectangle bounds = panel1.getComponent(i).getBounds();
-                    preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-                    preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-                }
-                Insets insets = panel1.getInsets();
-                preferredSize.width += insets.right;
-                preferredSize.height += insets.bottom;
-                panel1.setMinimumSize(preferredSize);
-                panel1.setPreferredSize(preferredSize);
-            }
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
-                .addComponent(panel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
-                .addComponent(panel1, GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
         setSize(894, 537);
         setLocationRelativeTo(null);
@@ -484,7 +480,7 @@ public class Application extends JFrame {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Amro
-    private JPanel panel1;
+    private JPanel mainPanel;
     private JPanel chessBoardPanel;
     private JPanel controlPanel;
     private JLabel label1;
