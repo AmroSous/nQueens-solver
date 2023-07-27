@@ -28,8 +28,35 @@ public class Board extends JPanel {
      */
     private final Application parent;
 
+    /**
+     * board themes
+     */
+    private Theme boardTheme;
+    public enum Theme {
+        DARK(Color.BLACK, Color.WHITE),
+        LIGHT(Color.DARK_GRAY, Color.LIGHT_GRAY);
+
+        private final Color blackColor;
+        private final Color whiteColor;
+
+        Theme(Color blackColor, Color whiteColor) {
+            this.blackColor = blackColor;
+            this.whiteColor = whiteColor;
+        }
+
+        public Color getBlackColor() {
+            return blackColor;
+        }
+
+        public Color getWhiteColor() {
+            return whiteColor;
+        }
+    }
+
+
     public Board(Application parent) {
         this.parent = parent;
+        boardTheme = Theme.LIGHT;
     }
 
     /**
@@ -47,7 +74,7 @@ public class Board extends JPanel {
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                g.setColor(white ? Color.white : Color.black);
+                g.setColor(white ? boardTheme.getWhiteColor() : boardTheme.getBlackColor());
                 g.fillRect(xi + col * squareSize, yi + row * squareSize, squareSize, squareSize);
                 white = !white;
             }
@@ -218,6 +245,15 @@ public class Board extends JPanel {
     public void setBoardSize(int value) {
         this.size = value;
         this.state = new int[size];
+        this.repaint();
+    }
+
+    /**
+     * to change board theme
+     * takes Board.Theme as parameter
+     */
+    public void setBoardTheme(Theme theme) {
+        this.boardTheme = theme;
         this.repaint();
     }
 }

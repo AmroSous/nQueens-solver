@@ -4,19 +4,21 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {comp panel1::l:::x}"
-			"$verticalGroup": "par l {comp panel1::l::499:x}"
+			"$horizontalGroup": "par l {comp mainPanel::l:::x}"
+			"$verticalGroup": "par l {comp mainPanel::l::499:x}"
 		} ) {
 			name: "this"
 			"$sizePolicy": 1
 			"$locationPolicy": 1
 			"background": new java.awt.Color( 204, 204, 204, 255 )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
-				name: "panel1"
-				"background": new java.awt.Color( 204, 204, 204, 255 )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) {
+				"autoSize": false
+			} ) {
+				name: "mainPanel"
+				"background": new java.awt.Color( 136, 85, 119, 255 )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 					name: "chessBoardPanel"
-					"background": new java.awt.Color( 204, 204, 204, 255 )
+					"background": new java.awt.Color( 136, 85, 119, 255 )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 10
 					"y": 6
@@ -235,9 +237,9 @@ new FormModel {
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"x": 485
-					"y": 5
+					"y": 10
 					"width": 395
-					"height": 485
+					"height": 480
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
 					name: "resultPanel"
