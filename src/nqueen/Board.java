@@ -126,7 +126,7 @@ public class Board extends JPanel {
      * the heuristic is computed by calculate the number of attacks
      * between queens on the board
      */
-    private int getHeuristic(int[] stateArr) {
+    private static int getHeuristic(int[] stateArr) {
         int ans = 0;
         int s = stateArr.length;
         HashMap<Integer, Integer> slope1 = new HashMap<>();
@@ -153,9 +153,12 @@ public class Board extends JPanel {
         int[] temp_state = parent_state.clone();
         int sz = parent_state.length;
 
-        for (int i = 0; i < sz; i++) {
-            temp_state[i] = rand.nextInt(sz);
+        int rand_col = rand.nextInt(sz);
+        int rand_row = rand.nextInt(sz);
+        while (rand_row == temp_state[rand_col]) {
+            rand_row = rand.nextInt(size);
         }
+        temp_state[rand_col] = rand_row;
         return temp_state;
     }
 
@@ -220,7 +223,7 @@ public class Board extends JPanel {
         Random rand = new Random();
         int iteration = 0;
 
-        while (!(tc <= finalTemp)) {
+        while (tc > finalTemp) {
             iteration++;
             tc *= coolingRate;
             next_state = getRandomSuccessor(curr_state);
