@@ -92,9 +92,16 @@ public class Application extends JFrame {
             error = "Invalid Algorithm.";
         }
         else if (algorithm.equals("Simulated Annealing")) {
-            String pattern = "^[0-9]{1,9}(.([0-9]{1,5}))?$";
-            if (!initialT.matches(pattern) || !cooling.matches(pattern) || !finalT.matches(pattern)) {
-                error = "Invalid inputs in fields.";
+            String coolingPattern = "^0.[0-9]{1,7}$";
+            String tempPattern = "^[0-9]{1,9}$";
+            if (!initialT.matches(tempPattern)) {
+                error = "invalid initial temperature.";
+            }
+            else if (!finalT.matches(tempPattern)) {
+                error = "invalid final temperature.";
+            }
+            else if (!cooling.matches(coolingPattern)) {
+                error = "cooling rate must be between 0-1";
             }
         }
 
@@ -140,6 +147,7 @@ public class Application extends JFrame {
         chessBoardPanel.setBackground(Color.decode("#885577"));
         board.setBackground(Color.decode("#885577"));
         board.setBoardTheme(Board.Theme.LIGHT);
+        messageLabel.setForeground(Color.red);
     }
 
     /**
@@ -154,6 +162,7 @@ public class Application extends JFrame {
         chessBoardPanel.setBackground(Color.decode("#999999"));
         board.setBackground(Color.decode("#999999"));
         board.setBoardTheme(Board.Theme.DARK);
+        messageLabel.setForeground(Color.red);
     }
 
     /**
